@@ -1,15 +1,64 @@
+<script setup lang="ts">
+import AppFormTextField from '@/components/AppFormTextField.vue';
+import AppTextQuestionForm from '@/components/AppTextQuestionForm.vue';
+import type { Survey } from '@/models/Survey';
+import type { SurveyMultipleChoiceQuestion, SurveyQuestion, SurveyTextQuestion } from '@/models/SurveyQuestion';
+import { useSurveyStore } from '@/stores/survey';
+import { ref } from 'vue';
+
+const surveyStore = useSurveyStore();
+
+const survey = ref<Survey>({
+  title: '',
+  description: '',
+  questions: [],
+})
+
+const createSurvey = () => {
+  console.log(survey.value);
+}
+
+const addMultipleChoiceQuestion = () => {
+  const question: SurveyMultipleChoiceQuestion = surveyStore.createEmptyQuestion('MULTIPLE_CHOICE') as SurveyMultipleChoiceQuestion;
+  survey.value.questions.push(question);
+}
+const addTextQuestion = () => {
+  const question: SurveyQuestion = surveyStore.createEmptyQuestion('TEXT') as SurveyTextQuestion;
+  survey.value.questions.push(question);
+}
+const removeQuestion = (questionId: string) => {
+  survey.value.questions = survey.value.questions.filter((question) => question.id !== questionId);
+}
+
+
+</script>
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    <h1 class="mb-4 text-xl">Create new Survey</h1>
+    {{ survey }}
+    <form @submit.prevent="createSurvey">
+      <div class="grid grid-cols-2 gap-4">
+        <AppFormTextField v-model="survey.title" labelText="Title" />
+        <AppFormTextField v-model="survey.description" labelText="Description" />
+      </div>
+      <div>
+        <h2 class="font-bold">Questions</h2>
+        <div class="my-2 flex flex-col gap-2">
+          <div v-for="(question, index) in survey.questions" :key="question.id">
+            <AppTextQuestionForm v-model:displayText="question.displayText" :questionIndex="index + 1"
+              @remove="removeQuestion(question.id)" />
+          </div>
+
+        </div>
+        <div class="flex gap-4">
+          <button type="button" class="px-4 py-2 bg-gray-800 text-white rounded-md" @click="addMultipleChoiceQuestion"
+            disabled>Add Multiple Choice
+            Question</button>
+          <button type="button" class="px-4 py-2 bg-gray-800 text-white rounded-md" @click="addTextQuestion">Add Text
+            Question</button>
+        </div>
+      </div>
+      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Create Survey</button>
+    </form>
   </div>
 </template>
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
