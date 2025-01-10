@@ -1,8 +1,15 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { SurveyQuestionType } from '@/models/SurveyQuestion'
+import type { Survey } from '@/models/Survey'
 
 export const useSurveyStore = defineStore('survey', () => {
+  const surveys = ref<Survey[]>([])
+
+  const addSurvey = (survey: Survey) => {
+    surveys.value.push(survey)
+  }
+
   const createEmptyQuestion = (type: SurveyQuestionType) => {
     const id = crypto.randomUUID()
     const additionalPropsByType = {
@@ -20,5 +27,5 @@ export const useSurveyStore = defineStore('survey', () => {
     }
   }
 
-  return { createEmptyQuestion }
+  return { surveys, addSurvey, createEmptyQuestion }
 })

@@ -3,6 +3,7 @@ import AppFormTextField from '@/components/AppFormTextField.vue';
 import AppTextQuestionForm from '@/components/AppTextQuestionForm.vue';
 import type { Survey } from '@/models/Survey';
 import type { SurveyQuestion, SurveyTextQuestion } from '@/models/SurveyQuestion';
+import router from '@/router';
 import { useSurveyStore } from '@/stores/survey';
 import { ref } from 'vue';
 
@@ -13,9 +14,16 @@ const survey = ref<Survey>({
   description: '',
   questions: [],
 })
+const errorMessage = ref<string | null>(null);
 
 const createSurvey = () => {
-  console.log(survey.value);
+  errorMessage.value = null;
+  if (!survey.value.title || survey.value.questions.length === 0) {
+    errorMessage.value = 'Please fill out all fields';
+    return;
+  }
+  surveyStore.addSurvey(survey.value);
+  router.push({ name: 'SurveyList' });
 }
 const addTextQuestion = () => {
   const question: SurveyQuestion = surveyStore.createEmptyQuestion('TEXT') as SurveyTextQuestion;
@@ -24,14 +32,14 @@ const addTextQuestion = () => {
 const removeQuestion = (questionId: string) => {
   survey.value.questions = survey.value.questions.filter((question) => question.id !== questionId);
 }
-
 </script>
 <template>
   <div>
     <h1 class="mb-4 text-xl">Create new Survey</h1>
+    <div v-if="errorMessage" class="bg-red-500 text-white p-2 rounded-md mb-4">{{ errorMessage }}</div>
     <form @submit.prevent="createSurvey">
       <div class="grid grid-cols-2 gap-4">
-        <AppFormTextField v-model="survey.title" labelText="Title" />
+        <AppFormTextField v-model="survey.title" labelText="Title" required />
         <AppFormTextField v-model="survey.description" labelText="Description" />
       </div>
       <div class="mb-6 pb-3 border-b border-gray-800">
