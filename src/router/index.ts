@@ -1,36 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/SurveyListView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'SurveyList',
       component: HomeView,
     },
     {
-      path: '/surveys',
-      name: 'SurveyList',
-      component: () => import('../views/SurveyListView.vue'),
-    },
-    {
-      path: '/surveys/:id',
-      name: 'SurveyDetail',
-      component: () => import('../views/SurveyDetailView.vue'),
-    },
-    {
-      path: '/survey/:id/edit',
+      path: '/survey/:surveyId/edit',
+      props: true,
       name: 'SurveyEdit',
       component: () => import('../views/SurveyEditView.vue'),
     },
     {
-      path: '/surveys/:id/take',
+      path: '/survey/:surveyId/take',
+      props: true,
       name: 'SurveyTake',
       component: () => import('../views/SurveyTakeView.vue'),
     },
     {
-      path: '/surveys/:id/results',
+      path: '/survey/:surveyId/results',
+      props: true,
       name: 'SurveyResults',
       component: () => import('../views/SurveyResultsView.vue'),
     },

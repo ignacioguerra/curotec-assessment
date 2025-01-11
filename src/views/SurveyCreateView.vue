@@ -9,11 +9,7 @@ import { ref } from 'vue';
 
 const surveyStore = useSurveyStore();
 
-const survey = ref<Survey>({
-  title: '',
-  description: '',
-  questions: [],
-})
+const survey = ref<Survey>(surveyStore.createEmptySurvey());
 const errorMessage = ref<string | null>(null);
 
 const createSurvey = () => {
