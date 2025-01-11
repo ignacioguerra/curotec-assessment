@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { SurveyQuestionType } from '@/models/SurveyQuestion'
@@ -21,7 +22,7 @@ export const useSurveyStore = defineStore('survey', () => {
     surveys.value[index] = survey
   }
   const createEmptySurvey = () => {
-    const id = crypto.randomUUID()
+    const id = uuidv4()
     return {
       id,
       title: '',
