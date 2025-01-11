@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { VueDraggableNext as draggable } from 'vue-draggable-next'
 import AppFormTextField from '@/components/AppFormTextField.vue';
 import AppTextQuestionForm from '@/components/AppTextQuestionForm.vue';
 import type { Survey } from '@/models/Survey';
@@ -40,13 +41,12 @@ const removeQuestion = (questionId: string) => {
       </div>
       <div class="mb-6 pb-3 border-b border-gray-800">
         <h2 class="font-bold">Questions</h2>
-        <div class="my-2 flex flex-col gap-2">
+        <draggable class="my-2 flex flex-col gap-2 dragArea list-group w-full" :list="survey.questions">
           <div v-for="(question, index) in survey.questions" :key="question.id">
             <AppTextQuestionForm v-model:displayText="question.displayText" :questionIndex="index + 1"
               @remove="removeQuestion(question.id)" />
           </div>
-
-        </div>
+        </draggable>
         <div class="flex gap-4">
           <button type="button" class="px-4 py-2 bg-gray-800 text-white rounded-md" @click="addTextQuestion">Add Text
             Question</button>

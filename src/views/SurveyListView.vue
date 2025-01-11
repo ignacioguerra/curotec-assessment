@@ -4,14 +4,12 @@ import AppSurveyOptions from '@/components/AppSurveyOptions.vue';
 import { useSurveyStore } from '@/stores/survey';
 import { computed } from 'vue';
 
-
 const surveyStore = useSurveyStore();
 const surveys = computed(() => surveyStore.surveys);
 
 const deleteSurvey = (surveyId: string) => {
   surveyStore.deleteSurvey(surveyId);
 }
-
 </script>
 
 <template>
