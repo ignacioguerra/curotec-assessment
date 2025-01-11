@@ -16,7 +16,7 @@ const router = createRouter({
       component: () => import('../views/SurveyEditView.vue'),
     },
     {
-      path: '/survey/:surveyId/take',
+      path: '/survey/:surveyId',
       props: true,
       name: 'SurveyTake',
       component: () => import('../views/SurveyTakeView.vue'),
